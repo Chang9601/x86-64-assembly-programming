@@ -13,7 +13,7 @@ format_specifier:
 out_str:
         .string "num의 제곱=%ld\n"
 
-# main() 함수를 전연 기호로 선언하며 프로그램의 진입점을 나타낸다.
+# main() 함수를 전역 기호로 선언하며 프로그램의 진입점을 나타낸다.
 .globl main
 main:                                   # main()
                                         #

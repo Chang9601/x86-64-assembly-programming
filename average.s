@@ -36,8 +36,6 @@ main:
         movq $0, %r12                   # %r12 레지스터는 for 문의 첨자(i)를 저장한다.
         movq $0, %r13                   # %r13 레지스터는 합(sum)을 저장한다.
                                         #
-                                        # 함수 종료 전에 이 명령어가 위치해야 하는데 그럴 경우 세그먼테이션 오류 발생. 왜?
-                                        #
         movq $input_str, %rdi           # printf("n?");
         movq $0, %rax                   #
         call printf                     #
