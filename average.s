@@ -19,7 +19,7 @@ main:
         pushq %rbp
         movq %rsp, %rbp
 
-        pushq %r12                      # 호출자 저장(caller-save) 레지스터(%rax, %rcx, %rdx, %rdi, %rsi, %rsp, %r8-%r11)는 함수 호출 간에 저장되지 않을 수 있다.
+        pushq %r12                      # 호출자 저장(caller-save) 레지스터(%rax, %rcx, %rdx, %rdi, %rsi, %rsp, %r8-%r11)는 함수 호출 간에 저장되지 않는다.
         pushq %r13                      # 피호출자 저장(callee-save) 레지스터( %rbx, %rbp, %r12-%r15)는 함수 호출 간에 저장된다.
                                         # 함수가 피호출자 저장 레지스터 중 어떤 것이라도 사용한다면 해당 값은 함수가 반환될 때 보존된다. 
                                         # 함수는 함수의 시작 부분에서 피호출자 저장 레지스터 값을 스택에 저장하고 반환 전에 복원해야 한다.
@@ -68,15 +68,16 @@ for:                                    # for (i = 0; i < n; i++)
                                         # }
 afterfor:                               #
                                         #
-        movq $sum_str, %rdi             # printf("SUM=%ld\n", sum);
+        movq $sum_str, %rdi             # printf("총합=%ld\n", sum);
         movq %r13, %rsi                 #
         movq $0, %rax                   #
         call printf                     #
                                         #
-        movq $avg_str, %rdi             # printf("AVG=%ld\n", sum / n);
+        movq $avg_str, %rdi             # printf("평균=%ld\n", sum / n);
         movq %r13, %rax                 #
+        cqto                            # 부호 확장을 수행하며 %rax 레지스터의 부호 비트를 %rdx 레지스터의 각 비트로 복사한다.
         idivq -32(%rbp)                 # idiviq S는 부호 있는 나누기로 %rdx:%rax, S로 나눈다. 몫은 %rax 레지스터, 나머지는 %rdx 레지스터에 저장된다.
-        movq %rax, %rsi                 # TO-DO: 음수(floating point exception).
+        movq %rax, %rsi                 #
         movq $0, %rax                   #
         call printf                     #
                                         #
