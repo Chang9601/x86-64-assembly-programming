@@ -14,11 +14,12 @@ sum_str:
 avg_str:
         .string "평균=%ld\n"
 
-.globl main
-main:
-        pushq %rbp
-        movq %rsp, %rbp
-
+.globl main                             
+main:                                   #
+                                        #
+        pushq %rbp                      #
+        movq %rsp, %rbp                 #
+                                        #
         pushq %r12                      # 호출자 저장(caller-save) 레지스터(%rax, %rcx, %rdx, %rdi, %rsi, %rsp, %r8-%r11)는 함수 호출 간에 저장되지 않는다.
         pushq %r13                      # 피호출자 저장(callee-save) 레지스터( %rbx, %rbp, %r12-%r15)는 함수 호출 간에 저장된다.
                                         # 함수가 피호출자 저장 레지스터 중 어떤 것이라도 사용한다면 해당 값은 함수가 반환될 때 보존된다. 
@@ -52,7 +53,7 @@ main:
 for:                                    # for (i = 0; i < n; i++)
                                         # {
         cmpq %r12, -32(%rbp)            # 
-        jle afterfor                    #
+        jle end_for                     #
                                         #
         movq $format_specifier, %rdi    # scanf("%ld", &n)
         movq $n, %rsi                   #
@@ -66,7 +67,7 @@ for:                                    # for (i = 0; i < n; i++)
         addq $1, %r12                   # i++;
         jmp for                         # for 문의 시작으로 돌아간다.
                                         # }
-afterfor:                               #
+end_for:                                #
                                         #
         movq $sum_str, %rdi             # printf("총합=%ld\n", sum);
         movq %r13, %rsi                 #
